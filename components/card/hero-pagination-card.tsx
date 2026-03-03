@@ -1,133 +1,146 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import {
-  Pause,
-  PauseCircleIcon,
-  PauseIcon,
-  Play,
-  PlayIcon,
-} from 'lucide-react';
+import { PositionDetail, ProductType } from '@/types/product';
+import { Pause, Play, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import DiscountBadge from '../svg/discount-badge';
+import MarkIcon from '../svg/mark-icon';
+import ShoppingPlusIcon from '../svg/shoping-plus-icon';
 
-type ProductType = {
-  name: string;
-  title: string;
-  description: string;
-  hasPromotion: boolean;
-  promotionText: string;
-  position: string;
-  price: number;
-  discountPrice: number;
-  x: number;
-  y: number;
+const PAGINATION_TIME_MS = 5000;
+
+const DEFAULT_DETAIL_POSITION_CLASS =
+  'bottom-full left-1/2 -translate-x-1/2 mb-3';
+
+const DETAIL_POSITION_CLASS: Record<PositionDetail, string> = {
+  [PositionDetail.TOP_LEFT]: 'bottom-full right-full mb-3 mr-3',
+  [PositionDetail.TOP]: 'bottom-full left-1/2 -translate-x-1/2 mb-3',
+  [PositionDetail.TOP_RIGHT]: 'bottom-full left-full mb-3 ml-3',
+  [PositionDetail.BOTTOM_LEFT]: 'top-full right-full mt-3 mr-3',
+  [PositionDetail.BOTTOM]: 'top-full left-1/2 -translate-x-1/2 mt-3',
+  [PositionDetail.BOTTOM_RIGHT]: 'top-full left-full mt-3 ml-3',
+  [PositionDetail.LEFT]: 'top-1/2 -translate-y-1/2 right-full mr-3',
+  [PositionDetail.RIGHT]: 'top-1/2 -translate-y-1/2 left-full ml-3',
 };
 
-const products: ProductType[] = [
-  {
-    name: 'JBL',
-    title: 'หูฟัง JBL',
-    description:
-      'หูฟังไร้สาย Sony  WH-1000XM6 สัมผัสประสบการณ์เสียงระดับพรีเมียม ระบบตัดเสียงรบกวนแบบ Adaptive Noise Cancelling อัจฉริยะ เสียงคุณภาพสูง  ใช้งานได้นานต่อเนื่อง  เหมาะสำหรับทุกไลฟ์สไตล์การฟังเพลงหรือประชุมออนไลน์',
-    hasPromotion: true,
-    promotionText: 'ส่วนลด 10% สำหรับสมาชิก',
-    position: 'top-left',
-    price: 5000,
-    discountPrice: 4500,
-    x: 350,
-    y: 50,
-  },
-  {
-    name: 'JBL2',
-    title: 'หูฟัง JBL 2',
-    description:
-      'หูฟังไร้สาย2 Sony  WH-1000XM6 สัมผัสประสบการณ์เสียงระดับพรีเมียม ระบบตัดเสียงรบกวนแบบ Adaptive Noise Cancelling อัจฉริยะ เสียงคุณภาพสูง  ใช้งานได้นานต่อเนื่อง  เหมาะสำหรับทุกไลฟ์สไตล์การฟังเพลงหรือประชุมออนไลน์',
-    hasPromotion: true,
-    promotionText: 'ส่วนลด 20% สำหรับสมาชิก',
-    position: 'top-left',
-    price: 5000,
-    discountPrice: 4000,
-    x: 100,
-    y: 100,
-  },
-  {
-    name: 'JBL3',
-    title: 'หูฟัง JBL 3',
-    description:
-      'หูฟังไร้สาย3 Sony  WH-1000XM6 สัมผัสประสบการณ์เสียงระดับพรีเมียม ระบบตัดเสียงรบกวนแบบ Adaptive Noise Cancelling อัจฉริยะ เสียงคุณภาพสูง  ใช้งานได้นานต่อเนื่อง  เหมาะสำหรับทุกไลฟ์สไตล์การฟังเพลงหรือประชุมออนไลน์',
-    hasPromotion: false,
-    promotionText: '',
-    position: 'top-left',
-    price: 5000,
-    discountPrice: 5000,
-    x: 200,
-    y: 200,
-  },
-];
+const getDetailPositionClass = (
+  position: PositionDetail = PositionDetail.RIGHT
+) => DETAIL_POSITION_CLASS[position] ?? DEFAULT_DETAIL_POSITION_CLASS;
 
-export default function HeroPaginationCard() {
+interface HeroPaginationCardProps {
+  products: ProductType[];
+}
+
+export default function HeroPaginationCard({
+  products,
+}: HeroPaginationCardProps) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const total = products.length;
-  const paginationTime = 5000;
 
   useEffect(() => {
     if (!isPlaying || total === 0) return;
     const timeoutId = setTimeout(() => {
       setActiveIndex(prev => (prev + 1) % total);
-    }, paginationTime);
+    }, PAGINATION_TIME_MS);
     return () => clearTimeout(timeoutId);
-  }, [activeIndex, isPlaying, paginationTime, total]);
+  }, [activeIndex, isPlaying, total]);
 
   return (
-    <div className="w-full h-full rounded-[45px] bg-blue-100 relative">
-      <div className="absolute bottom-0 right-0 w-[700px] h-[450px] ">
-        <div className="relative w-full h-full rounded-4xl overflow-hidden">
+    <div className="w-full h-full rounded-[45px] relative isolate">
+      <Image
+        src="/images/hero-primary-image.png"
+        alt="hero-primary-image"
+        fill
+        className="object-contain object-left rounded-[45px] z-0"
+      />
+      <div className="absolute bottom-0 right-0 w-[716px] h-[483px] z-20">
+        <div className="relative w-full h-full rounded-4xl">
           <Image
-            src="/images/image-test.png"
-            alt="image-test"
-            layout="fill"
-            className="object-cover relative"
+            src="/images/hero-products-image.png"
+            alt="hero-products-image"
+            fill
+            className="object-cover relative z-0"
           />
           {products.map((item, index) => {
+            const percentDiscount = item.percentDiscount;
+            const detailPositionClass = getDetailPositionClass(item.position);
             return (
-              <div key={index}>
+              <div
+                key={index}
+                style={{ left: item.x, top: item.y }}
+                className="absolute w-6 h-6 z-20"
+              >
                 {/* mark */}
                 <button
                   onClick={() => setActiveIndex(index)}
-                  style={{ left: item.x, top: item.y }}
-                  className="absolute cursor-pointer z-10 bg-white border-gray-400 border-2 rounded-full w-6 h-6"
-                />
-
+                  className="absolute left-0 top-0 cursor-pointer z-30 w-6 h-6"
+                >
+                  <MarkIcon />
+                </button>
+                {/* Detail on active */}
                 {index === activeIndex && (
                   <div
-                    style={{ left: item.x + 30, top: item.y - 8 }}
-                    className="pointer-events-none absolute z-20 w-full max-w-[220px] rounded-xl bg-[#FEFEFEBF] backdrop-blur-xl p-4 text-primary-color border border-[#E4E4E7]"
+                    className={cn(
+                      'pointer-events-auto absolute z-40 w-[181px] rounded-xl bg-[#FEFEFEBF] backdrop-blur-xl p-4 text-primary-color border border-[#E4E4E7]',
+                      detailPositionClass
+                    )}
                   >
                     <div className="text-xs text-[#0037C0] font-bold">
                       {item.title}
                     </div>
-                    <div className="mt-1 text-base text-[#71717B] leading-snug line-clamp-2">
+                    <div className="mt-1.5 text-base text-[#212121] font-bold leading-snug line-clamp-2">
                       {item.description}
                     </div>
-                    <div className="mt-2 flex items-center gap-2 text-sm font-semibold">
-                      {item.hasPromotion ? (
-                        <>
-                          <span>{item.discountPrice.toLocaleString()}</span>
-                          <span className="text-xs text-[#E7000B] line-through">
-                            {item.price.toLocaleString()}
-                          </span>
-                        </>
-                      ) : (
-                        <span>{item.price.toLocaleString()}</span>
-                      )}
+                    <div className="text-[10px] text-[#71717B] font-medium line-clamp-2">
+                      {item.subDescription}
                     </div>
-                    {item.hasPromotion && (
-                      <div className="mt-1 text-[11px] text-[#71717B]">
-                        {item.promotionText}
+                    <div className="mt-2.5">
+                      {percentDiscount !== undefined && (
+                        <>
+                          <span className="text-xs text-[#E7000B] font-semibold line-clamp-1">
+                            โปรโมชั่นนี้เฉพาะสั่งซื้อออนไลน์เท่านั้น
+                          </span>
+                          <div className="flex items-center gap-x-1 text-xs text-[#71717B]">
+                            <span className="line-through">
+                              ฿{item.originalPrice}
+                            </span>
+                            {item.originalPrice && <span>ลดทันที</span>}
+                            <span>฿{item.price}</span>
+                          </div>
+                        </>
+                      )}
+                      <div className="flex items-center gap-x-1">
+                        <span className="text-xl text-[#E7000B] font-bold">
+                          ฿{item.price}
+                        </span>
+                        {percentDiscount !== undefined && (
+                          <DiscountBadge
+                            percent={percentDiscount}
+                            width={48}
+                            height={22}
+                            className="block"
+                          />
+                        )}
                       </div>
-                    )}
+                    </div>
+
+                    <div className="flex items-center gap-x-2.5 mt-1">
+                      <Button
+                        variant="default"
+                        className="cursor-pointer p-2 h-8"
+                      >
+                        <ShoppingPlusIcon />
+                      </Button>
+                      <Button
+                        variant="danger"
+                        className="cursor-pointer flex items-center h-8"
+                      >
+                        <ShoppingCart /> ซื้อเลย
+                      </Button>
+                    </div>
                   </div>
                 )}
               </div>
@@ -135,10 +148,10 @@ export default function HeroPaginationCard() {
           })}
         </div>
 
-        <div className="absolute bottom-4 justify-center left-0 right-0 flex items-center gap-x-4 max-w-[340px] mx-auto">
+        <div className="absolute bottom-4 z-10 justify-center left-0 right-0 flex items-center gap-x-4 max-w-[340px] mx-auto">
           <Button
             type="button"
-            className="rounded-full w-12 h-12 bg-[#EEEEF280] backdrop-blur-xl backdrop-saturate-150 text-primary-color hover:bg-[rgba(238,238,242,0.95)]"
+            className="rounded-full w-12 h-12 bg-[#EEEEF280] border-none backdrop-blur-xl backdrop-saturate-150 text-primary-color hover:bg-white cursor-pointer"
             onClick={() => setIsPlaying(prev => !prev)}
             aria-pressed={isPlaying}
             variant={isPlaying ? 'default' : 'outline'}
@@ -146,7 +159,7 @@ export default function HeroPaginationCard() {
             {isPlaying ? <Pause /> : <Play />}
           </Button>
           <div className="bg-[#EEEEF280] backdrop-blur-xl backdrop-saturate-150 px-6 py-5 rounded-full h-12">
-            <div className=" flex items-center justify-center gap-4">
+            <div className="flex items-center justify-center gap-4">
               {products.map((_, index) => (
                 <button
                   key={index}
@@ -168,7 +181,7 @@ export default function HeroPaginationCard() {
                         animationName: isPlaying
                           ? 'pagination-progress'
                           : 'none',
-                        animationDuration: `${paginationTime}ms`,
+                        animationDuration: `${PAGINATION_TIME_MS}ms`,
                         animationTimingFunction: 'linear',
                         animationFillMode: 'forwards',
                         animationPlayState: isPlaying ? 'running' : 'paused',

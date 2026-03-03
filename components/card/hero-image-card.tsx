@@ -18,7 +18,7 @@ export default function HeroImageCard({
   return (
     <div
       className={cn(
-        'rounded-2xl overflow-hidden bg-blue-100 w-full h-[200px] relative',
+        'rounded-2xl overflow-hidden bg-[#B9C7FF] w-full h-[200px] relative',
         className
       )}
     >
