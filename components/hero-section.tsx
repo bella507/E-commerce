@@ -1,7 +1,18 @@
+'use client';
+
+import { useRef } from 'react';
 import { PositionDetail, ProductType } from '@/types/product';
 import HeroImageCard from './card/hero-image-card';
 import HeroPaginationCard from './card/hero-pagination-card';
 import Image from 'next/image';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from './ui/carousel';
+import Autoplay from 'embla-carousel-autoplay';
 
 const heroCards = [
   {
@@ -16,6 +27,16 @@ const heroCards = [
   },
   {
     title: '3',
+    image: '/images/card3.png',
+    href: '/',
+  },
+  {
+    title: '4',
+    image: '/images/card1.png',
+    href: '/',
+  },
+  {
+    title: '5',
     image: '/images/card3.png',
     href: '/',
   },
@@ -70,6 +91,58 @@ const products: ProductType[] = [
 ];
 
 export default function HeroSection() {
+  const heroCardCount = heroCards.length;
+  const autoplay = useRef(
+    Autoplay({
+      delay: 3000,
+      stopOnInteraction: false,
+      stopOnMouseEnter: false,
+    })
+  );
+
+  const renderHeroCards = () => {
+    if (heroCardCount === 0) {
+      return null;
+    }
+    if (heroCardCount === 1) {
+      return (
+        <div className="grid grid-cols-1">
+          <HeroImageCard {...heroCards[0]} />
+        </div>
+      );
+    }
+
+    if (heroCardCount <= 3) {
+      return (
+        <div
+          className={`grid gap-x-4 gap-y-4 ${heroCardCount === 3 ? 'grid-cols-3' : 'grid-cols-2'}`}
+        >
+          {heroCards.map(heroCard => (
+            <HeroImageCard key={heroCard.title} {...heroCard} />
+          ))}
+        </div>
+      );
+    }
+
+    return (
+      <Carousel
+        className="w-full"
+        opts={{ align: 'start', loop: true }}
+        plugins={[autoplay.current]}
+      >
+        <CarouselContent>
+          {heroCards.map(heroCard => (
+            <CarouselItem key={heroCard.title} className="basis-1/3">
+              <HeroImageCard {...heroCard} />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className="left-2" />
+        <CarouselNext className="right-2" />
+      </Carousel>
+    );
+  };
+
   return (
     <section className="flex flex-col gap-x-4 gap-y-6">
       <div className="flex gap-x-4 mt-[70px]">
@@ -87,11 +160,7 @@ export default function HeroSection() {
           <Image src="/images/back-friday.png" alt="back-friday" fill />
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-x-4">
-        {heroCards.map(heroCard => (
-          <HeroImageCard key={heroCard.title} {...heroCard} />
-        ))}
-      </div>
+      {renderHeroCards()}
     </section>
   );
 }
