@@ -6,7 +6,7 @@ export default function Home() {
     <div className="flex min-h-screen items-center justify-center bg-white font-sans">
       <main className="flex min-h-screen w-full flex-col sm:items-start">
         <Navbar />
-        <div className="max-w-8xl w-full mx-auto px-[42px]">
+        <div className="max-w-8xl w-full mx-auto px-4 md:px-[42px]">
           <HeroSection />
         </div>
       </main>

@@ -23,3 +23,10 @@ export type ProductType = {
   x: number;
   y: number;
 };
+
+export type ProductDetailType = {
+  title: string;
+  image: string;
+  productGroupImage: string;
+  product: ProductType[];
+};
