@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Pause, Play } from 'lucide-react';
 
-export const HERO_PAGINATION_TIME_MS = 5000;
+export const HERO_PAGINATION_TIME_MS = 10000;
 
 export interface HeroPaginationProps {
   total: number;

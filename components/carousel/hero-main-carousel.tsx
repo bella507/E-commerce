@@ -60,8 +60,8 @@ export function HeroMainCarousel({ items }: HeroMainCarouselProps) {
 
   if (heroCardCount === 1) {
     return (
-      <div className="mt-[70px] h-[412px] w-full relative">
-        <div className="relative h-full w-full overflow-hidden rounded-[48px]">
+      <div className="h-[412px] w-full relative">
+        <div className="relative h-full w-full rounded-[48px]">
           <Image
             src={items[0].image}
             alt={items[0].title}
@@ -92,17 +92,14 @@ export function HeroMainCarousel({ items }: HeroMainCarouselProps) {
   }
 
   return (
-    <div className="mt-[70px] h-[412px] w-full relative">
-      <div className="relative h-[412px] w-full max-w-[1360px] [--hero-next-width:clamp(0px,calc((100vw-1024px)*1.1),369px)] [--hero-gap:clamp(0px,calc((100vw-1024px)*0.05),16px)]">
+    <div className="h-[483px] w-full relative">
+      <div className="relative w-full max-w-[1360px] [--hero-next-width:clamp(0px,calc((100vw-1024px)*1.1),369px)] [--hero-gap:clamp(0px,calc((100vw-1024px)*0.05),16px)]">
         <Carousel
-          className="h-[412px] w-full"
+          className="w-full"
           opts={{ align: 'start', loop: true, watchDrag: false }}
           setApi={setHeroBannerApi}
         >
-          <CarouselContent
-            className="h-[412px] ml-0 select-none"
-            viewportClassName="overflow-visible"
-          >
+          <CarouselContent className="items-end h-[483px] relative ml-0 select-none">
             {items.map((heroCard, index) => {
               const isActive = index === heroBannerIndex;
 
@@ -111,7 +108,7 @@ export function HeroMainCarousel({ items }: HeroMainCarouselProps) {
                   key={heroCard.title + index}
                   className={cn(
                     'h-[412px] pl-0 transition-opacity duration-500 ease-out basis-full max-w-full opacity-0',
-                    isActive && 'opacity-100 animate-[hero-fade_500ms_ease-out]'
+                    isActive && 'opacity-100 animate-[hero-fade_100ms_ease-out]'
                   )}
                 >
                   <div
@@ -119,18 +116,18 @@ export function HeroMainCarousel({ items }: HeroMainCarouselProps) {
                       'relative h-full w-full rounded-[48px]',
                       showInlinePreview &&
                         isActive &&
-                        'flex min-[1192px]:gap-[var(--hero-gap)]'
+                        'flex min-[1192px]:gap-(--hero-gap)'
                     )}
                   >
                     <div
                       className={cn(
-                        'relative h-full w-full rounded-[48px]',
+                        'relative h-full items-end w-full rounded-[48px] bottom-0',
                         showInlinePreview &&
                           isActive &&
                           'min-[1192px]:w-[calc(100%-var(--hero-next-width)-var(--hero-gap))] min-[1192px]:flex-none'
                       )}
                     >
-                      <div className="relative h-full w-full overflow-hidden rounded-[48px]">
+                      <div className="relative h-full w-full rounded-[48px]">
                         <Image
                           src={heroCard.image}
                           alt={heroCard.title}
@@ -159,14 +156,27 @@ export function HeroMainCarousel({ items }: HeroMainCarouselProps) {
                       )}
                     </div>
                     {showInlinePreview && isActive && (
-                      <div className="relative hidden h-full overflow-hidden rounded-[48px] min-[1192px]:block min-[1192px]:w-[var(--hero-next-width)] min-[1192px]:flex-none">
+                      <div className="relative hidden h-full rounded-[48px] min-[1192px]:block min-[1192px]:w-(--hero-next-width) min-[1192px]:flex-none">
                         <Image
-                          src={items[(index + 1) % heroCardCount].image}
+                          src={
+                            items[(index + 1) % heroCardCount].preProductBgImage
+                          }
                           alt={items[(index + 1) % heroCardCount].title}
                           fill
-                          className="h-full w-full object-cover select-none"
+                          className="h-full w-full rounded-[48px] object-cover select-none"
                           draggable={false}
                         />
+                        <div className="absolute -top-16 left-0 right-0 z-20 w-full h-[200px]">
+                          <Image
+                            src={
+                              items[(index + 1) % heroCardCount]
+                                .preProductHeaderImage
+                            }
+                            alt={items[(index + 1) % heroCardCount].title}
+                            fill
+                            draggable={false}
+                          />
+                        </div>
                       </div>
                     )}
                   </div>

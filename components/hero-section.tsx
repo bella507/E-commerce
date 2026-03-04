@@ -38,6 +38,8 @@ const productDetails: ProductDetailType[] = [
     title: '1',
     image: '/images/hero-primary-image.png',
     productGroupImage: '/images/hero-products-image.png',
+    preProductHeaderImage: '/images/back-friday-top.png',
+    preProductBgImage: '/images/back-friday.png',
     product: [
       {
         name: 'JBL',
@@ -90,6 +92,8 @@ const productDetails: ProductDetailType[] = [
     title: '2',
     image: '/images/card1.png',
     productGroupImage: '/images/hero-products-image1.png',
+    preProductHeaderImage: '/images/back-friday-top.png',
+    preProductBgImage: '/images/back-friday.png',
     product: [
       {
         name: 'JBL',
@@ -142,6 +146,8 @@ const productDetails: ProductDetailType[] = [
     title: '3',
     image: '/images/card2.png',
     productGroupImage: '/images/hero-products-image1.png',
+    preProductHeaderImage: '/images/back-friday-top.png',
+    preProductBgImage: '/images/back-friday.png',
     product: [
       {
         name: 'JBL',

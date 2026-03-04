@@ -28,5 +28,7 @@ export type ProductDetailType = {
   title: string;
   image: string;
   productGroupImage: string;
+  preProductHeaderImage: string;
+  preProductBgImage: string;
   product: ProductType[];
 };
