@@ -79,28 +79,26 @@ export default function HeroProductCard({ products }: HeroProductCardProps) {
             {activeIndex !== null && index === activeIndex && (
               <div
                 className={cn(
-                  'pointer-events-auto absolute z-50 w-[181px] rounded-xl bg-[#FEFEFEBF] backdrop-blur-xl p-2 md:p-4 text-primary-color border border-[#E4E4E7]',
+                  'pointer-events-auto absolute z-50 w-[181px] rounded-xl bg-white-opacity backdrop-blur-xl p-2 md:p-4 text-primary-color border border-border',
                   isMobile
                     ? 'top-6 left-1/2 -translate-x-1/2'
                     : detailPositionClass
                 )}
               >
-                <div className="text-xs text-[#0037C0] font-bold">
-                  {item.title}
-                </div>
-                <div className="mt-1.5 text-xs md:text-base text-[#212121] font-bold leading-snug line-clamp-1 md:line-clamp-2 ">
+                <div className="text-xs text-blue font-bold">{item.title}</div>
+                <div className="mt-1.5 text-xs md:text-base text-dark font-bold leading-snug line-clamp-1 md:line-clamp-2 ">
                   {item.description}
                 </div>
-                <div className="text-[10px] text-[#71717B] font-medium line-clamp-1 md:line-clamp-2">
+                <div className="text-[10px] text-gray font-medium line-clamp-1 md:line-clamp-2">
                   {item.subDescription}
                 </div>
                 <div className="mt-0 md:mt-2.5">
                   {percentDiscount !== undefined && !isMobile && (
                     <>
-                      <span className="text-xs text-[#E7000B] font-semibold line-clamp-1">
+                      <span className="text-xs text-red font-semibold line-clamp-1">
                         โปรโมชั่นนี้เฉพาะสั่งซื้อออนไลน์เท่านั้น
                       </span>
-                      <div className="flex items-center gap-x-1 text-xs text-[#71717B]">
+                      <div className="flex items-center gap-x-1 text-xs text-gray">
                         <span className="line-through">
                           ฿{item.originalPrice}
                         </span>
@@ -110,7 +108,7 @@ export default function HeroProductCard({ products }: HeroProductCardProps) {
                     </>
                   )}
                   <div className="flex items-center gap-x-1">
-                    <span className="text-sm md:text-xl text-[#E7000B] font-bold">
+                    <span className="text-sm md:text-xl text-red font-bold">
                       ฿{item.price}
                     </span>
                     {percentDiscount !== undefined && (
