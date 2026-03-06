@@ -3,10 +3,17 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { PositionDetail, ProductType } from '@/types/product';
 import { ShoppingCart } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect, type CSSProperties } from 'react';
 import DiscountBadge from '../svg/discount-badge';
 import MarkIcon from '../svg/mark-icon';
 import ShoppingPlusIcon from '../svg/shoping-plus-icon';
+
+interface ExtendedCSSProperties extends CSSProperties {
+  '--mark-x'?: string;
+  '--mark-y'?: string;
+  '--mark-x-mobile'?: string;
+  '--mark-y-mobile'?: string;
+}
 
 const DEFAULT_DETAIL_POSITION_CLASS =
   'bottom-full left-1/2 -translate-x-1/2 mb-3';
@@ -32,17 +39,33 @@ interface HeroProductCardProps {
 
 export default function HeroProductCard({ products }: HeroProductCardProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 767px)');
+    const listener = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    media.addEventListener('change', listener);
+    // Defer initial check to avoid linter warning
+    setTimeout(() => setIsMobile(media.matches), 0);
+    return () => media.removeEventListener('change', listener);
+  }, []);
 
   return (
     <div className="relative w-full h-full">
       {products.map((item, index) => {
         const percentDiscount = item.percentDiscount;
         const detailPositionClass = getDetailPositionClass(item.position);
+        const markStyle: ExtendedCSSProperties = {
+          '--mark-x': `${item.x}px`,
+          '--mark-y': `${item.y}px`,
+          '--mark-x-mobile': `${item.xMobile ?? item.x}px`,
+          '--mark-y-mobile': `${item.yMobile ?? item.y}px`,
+        };
         return (
           <div
             key={index}
-            style={{ left: item.x, top: item.y }}
-            className="absolute w-6 h-6"
+            style={markStyle}
+            className="absolute w-6 h-6 left-(--mark-x-mobile) top-(--mark-y-mobile) md:left-(--mark-x) md:top-(--mark-y)"
           >
             <button
               onClick={() =>
@@ -56,21 +79,23 @@ export default function HeroProductCard({ products }: HeroProductCardProps) {
             {activeIndex !== null && index === activeIndex && (
               <div
                 className={cn(
-                  'pointer-events-auto absolute z-50 w-[181px] rounded-xl bg-[#FEFEFEBF] backdrop-blur-xl p-4 text-primary-color border border-[#E4E4E7]',
-                  detailPositionClass
+                  'pointer-events-auto absolute z-50 w-[181px] rounded-xl bg-[#FEFEFEBF] backdrop-blur-xl p-2 md:p-4 text-primary-color border border-[#E4E4E7]',
+                  isMobile
+                    ? 'top-6 left-1/2 -translate-x-1/2'
+                    : detailPositionClass
                 )}
               >
                 <div className="text-xs text-[#0037C0] font-bold">
                   {item.title}
                 </div>
-                <div className="mt-1.5 text-base text-[#212121] font-bold leading-snug line-clamp-2">
+                <div className="mt-1.5 text-xs md:text-base text-[#212121] font-bold leading-snug line-clamp-1 md:line-clamp-2 ">
                   {item.description}
                 </div>
-                <div className="text-[10px] text-[#71717B] font-medium line-clamp-2">
+                <div className="text-[10px] text-[#71717B] font-medium line-clamp-1 md:line-clamp-2">
                   {item.subDescription}
                 </div>
-                <div className="mt-2.5">
-                  {percentDiscount !== undefined && (
+                <div className="mt-0 md:mt-2.5">
+                  {percentDiscount !== undefined && !isMobile && (
                     <>
                       <span className="text-xs text-[#E7000B] font-semibold line-clamp-1">
                         โปรโมชั่นนี้เฉพาะสั่งซื้อออนไลน์เท่านั้น
@@ -85,7 +110,7 @@ export default function HeroProductCard({ products }: HeroProductCardProps) {
                     </>
                   )}
                   <div className="flex items-center gap-x-1">
-                    <span className="text-xl text-[#E7000B] font-bold">
+                    <span className="text-sm md:text-xl text-[#E7000B] font-bold">
                       ฿{item.price}
                     </span>
                     {percentDiscount !== undefined && (

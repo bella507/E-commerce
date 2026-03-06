@@ -66,8 +66,8 @@ export function HeroCarousel({ items }: HeroCarouselProps) {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious className="left-2" />
-      <CarouselNext className="right-2" />
+      <CarouselPrevious className="left-2 hidden xl:flex" />
+      <CarouselNext className="right-2 hidden xl:flex" />
     </Carousel>
   );
 }

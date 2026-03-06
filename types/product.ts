@@ -22,13 +22,13 @@ export type ProductType = {
   percentDiscount?: number;
   x: number;
   y: number;
+  xMobile?: number;
+  yMobile?: number;
 };
 
-export type ProductDetailType = {
+export type HeroMainCarouselType = {
   title: string;
   image: string;
   productGroupImage: string;
-  preProductHeaderImage: string;
-  preProductBgImage: string;
   product: ProductType[];
 };

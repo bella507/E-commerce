@@ -45,66 +45,79 @@ function useCarousel() {
 const Carousel = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & CarouselProps
->(({ orientation = 'horizontal', opts, setApi, plugins, className, children, ...props }, ref) => {
-  const [carouselRef, api] = useEmblaCarousel(
+>(
+  (
     {
-      ...opts,
-      axis: orientation === 'horizontal' ? 'x' : 'y',
+      orientation = 'horizontal',
+      opts,
+      setApi,
+      plugins,
+      className,
+      children,
+      ...props
     },
-    plugins
-  );
-  const [canScrollPrev, setCanScrollPrev] = React.useState(false);
-  const [canScrollNext, setCanScrollNext] = React.useState(false);
+    ref
+  ) => {
+    const [carouselRef, api] = useEmblaCarousel(
+      {
+        ...opts,
+        axis: orientation === 'horizontal' ? 'x' : 'y',
+      },
+      plugins
+    );
+    const [canScrollPrev, setCanScrollPrev] = React.useState(false);
+    const [canScrollNext, setCanScrollNext] = React.useState(false);
 
-  const scrollPrev = React.useCallback(() => {
-    api?.scrollPrev();
-  }, [api]);
+    const scrollPrev = React.useCallback(() => {
+      api?.scrollPrev();
+    }, [api]);
 
-  const scrollNext = React.useCallback(() => {
-    api?.scrollNext();
-  }, [api]);
+    const scrollNext = React.useCallback(() => {
+      api?.scrollNext();
+    }, [api]);
 
-  const onSelect = React.useCallback(() => {
-    if (!api) return;
-    setCanScrollPrev(api.canScrollPrev());
-    setCanScrollNext(api.canScrollNext());
-  }, [api]);
+    const onSelect = React.useCallback(() => {
+      if (!api) return;
+      setCanScrollPrev(api.canScrollPrev());
+      setCanScrollNext(api.canScrollNext());
+    }, [api]);
 
-  React.useEffect(() => {
-    if (!api) return;
-    onSelect();
-    api.on('reInit', onSelect);
-    api.on('select', onSelect);
-    return () => {
-      api.off('reInit', onSelect);
-      api.off('select', onSelect);
-    };
-  }, [api, onSelect]);
+    React.useEffect(() => {
+      if (!api) return;
+      onSelect();
+      api.on('reInit', onSelect);
+      api.on('select', onSelect);
+      return () => {
+        api.off('reInit', onSelect);
+        api.off('select', onSelect);
+      };
+    }, [api, onSelect]);
 
-  React.useEffect(() => {
-    if (!api || !setApi) return;
-    setApi(api);
-  }, [api, setApi]);
+    React.useEffect(() => {
+      if (!api || !setApi) return;
+      setApi(api);
+    }, [api, setApi]);
 
-  return (
-    <CarouselContext.Provider
-      value={{
-        carouselRef,
-        api,
-        opts,
-        orientation,
-        scrollPrev,
-        scrollNext,
-        canScrollPrev,
-        canScrollNext,
-      }}
-    >
-      <div ref={ref} className={cn('relative', className)} {...props}>
-        {children}
-      </div>
-    </CarouselContext.Provider>
-  );
-});
+    return (
+      <CarouselContext.Provider
+        value={{
+          carouselRef,
+          api,
+          opts,
+          orientation,
+          scrollPrev,
+          scrollNext,
+          canScrollPrev,
+          canScrollNext,
+        }}
+      >
+        <div ref={ref} className={cn('relative', className)} {...props}>
+          {children}
+        </div>
+      </CarouselContext.Provider>
+    );
+  }
+);
 Carousel.displayName = 'Carousel';
 
 type CarouselContentProps = React.HTMLAttributes<HTMLDivElement> & {
@@ -113,22 +126,26 @@ type CarouselContentProps = React.HTMLAttributes<HTMLDivElement> & {
 
 const CarouselContent = React.forwardRef<HTMLDivElement, CarouselContentProps>(
   ({ className, viewportClassName, ...props }, ref) => {
-  const { carouselRef, orientation } = useCarousel();
+    const { carouselRef, orientation } = useCarousel();
 
-  return (
-    <div ref={carouselRef} className={cn('overflow-hidden', viewportClassName)}>
+    return (
       <div
-        ref={ref}
-        className={cn(
-          'flex h-full',
-          orientation === 'horizontal' ? '-ml-4' : '-mt-4 flex-col',
-          className
-        )}
-        {...props}
-      />
-    </div>
-  );
-});
+        ref={carouselRef}
+        className={cn('overflow-hidden', viewportClassName)}
+      >
+        <div
+          ref={ref}
+          className={cn(
+            'flex h-full',
+            orientation === 'horizontal' ? '-ml-4' : '-mt-4 flex-col',
+            className
+          )}
+          {...props}
+        />
+      </div>
+    );
+  }
+);
 CarouselContent.displayName = 'CarouselContent';
 
 const CarouselItem = React.forwardRef<
