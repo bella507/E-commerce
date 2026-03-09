@@ -38,10 +38,10 @@ export function HeroCarousel({ items }: HeroCarouselProps) {
     );
   }
 
-  if (heroCardCount <= 3) {
+  if (heroCardCount <= 2) {
     return (
       <div
-        className={`grid gap-x-2 gap-y-2 md:gap-x-4 md:gap-y-4 ${heroCardCount === 3 ? 'grid-cols-1 md:grid-cols-3' : 'grid-cols-1 md:grid-cols-2'}`}
+        className={`flex gap-x-2 gap-y-2 md:gap-x-4 md:gap-y-4 ${heroCardCount === 2 && 'grid-cols-2'}`}
       >
         {items.map(heroCard => (
           <HeroImageCard key={heroCard.title} {...heroCard} />
@@ -60,7 +60,7 @@ export function HeroCarousel({ items }: HeroCarouselProps) {
         {items.map(heroCard => (
           <CarouselItem
             key={heroCard.title}
-            className="basis-1/2 pl-2 md:basis-1/3 md:pl-4"
+            className="basis-1/2 pl-2 sm:basis-1/3 md:pl-4"
           >
             <HeroImageCard {...heroCard} />
           </CarouselItem>
