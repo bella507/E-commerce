@@ -85,7 +85,7 @@ export function HeroMainCarousel({
                   src={heroCard.image}
                   alt={heroCard.title}
                   fill
-                  className="h-full w-full object-top-left rounded-[24px] md:rounded-[36px] lg:rounded-[48px] object-cover md:object-contain select-none"
+                  className="h-full w-full object-top-left rounded-[24px] md:rounded-[36px] lg:rounded-[48px] object-fill md:object-contain select-none"
                   priority={index === 0}
                   draggable={false}
                 />
