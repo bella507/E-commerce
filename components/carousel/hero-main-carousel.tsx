@@ -85,12 +85,12 @@ export function HeroMainCarousel({
                   src={heroCard.image}
                   alt={heroCard.title}
                   fill
-                  className="h-full w-full object-bottom-left rounded-[24px] md:rounded-[36px] lg:rounded-[48px] object-contain select-none"
+                  className="h-full w-full object-top-left rounded-[24px] md:rounded-[36px] lg:rounded-[48px] object-cover md:object-contain select-none"
                   priority={index === 0}
                   draggable={false}
                 />
                 {heroCard.productGroupImage && (
-                  <div className="absolute bottom-0 right-0 z-40 w-full md:w-[716px] h-[290px] md:h-[483px]">
+                  <div className="absolute bottom-0 right-0 z-40 w-[375px] md:w-[716px] h-[270px] md:h-[483px]">
                     <div className="relative h-full w-full">
                       <Image
                         src={heroCard.productGroupImage}

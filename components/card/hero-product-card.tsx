@@ -65,7 +65,7 @@ export default function HeroProductCard({ products }: HeroProductCardProps) {
           <div
             key={index}
             style={markStyle}
-            className="hidden md:block absolute w-6 h-6 left-(--mark-x-mobile) top-(--mark-y-mobile) md:left-(--mark-x) md:top-(--mark-y)"
+            className="absolute w-6 h-6 left-(--mark-x-mobile) top-(--mark-y-mobile) md:left-(--mark-x) md:top-(--mark-y)"
           >
             <button
               onClick={() =>
