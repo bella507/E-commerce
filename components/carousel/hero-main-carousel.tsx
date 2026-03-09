@@ -35,41 +35,10 @@ export function HeroMainCarousel({
     return null;
   }
 
-  if (heroCardCount === 1) {
-    return (
-      <div className="relative w-full rounded-[24px] md:rounded-[36px] lg:rounded-[48px] h-[280px] md:h-[483px]">
-        <Image
-          src={items[0].image}
-          alt={items[0].title}
-          fill
-          className="h-full w-full object-cover select-none"
-          draggable={false}
-        />
-        {items[0].productGroupImage && (
-          <div className="absolute bottom-0 right-0 z-40 h-[483px] w-[716px]">
-            <div className="relative h-full w-full">
-              <Image
-                src={items[0].productGroupImage}
-                fill
-                alt={items[0].title}
-                className="pointer-events-none"
-              />
-              {items[0].product?.length ? (
-                <div className="absolute inset-0 z-20">
-                  <HeroProductCard products={items[0].product} />
-                </div>
-              ) : null}
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  }
-
   return (
     <Carousel
       className="flex-1 relative max-w-full md:max-w-full xl:max-w-[974px] overflow-hidden"
-      opts={{ align: 'start', loop: true, watchDrag: false }}
+      opts={{ align: 'start', loop: heroCardCount > 1, watchDrag: false }}
       setApi={onApiChange}
     >
       <CarouselContent className="items-end h-[280px] md:h-[483px] relative ml-0 select-none">
