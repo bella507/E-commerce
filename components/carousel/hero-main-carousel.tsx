@@ -90,7 +90,7 @@ export function HeroMainCarousel({
                   draggable={false}
                 />
                 {heroCard.productGroupImage && (
-                  <div className="absolute bottom-0 right-0 z-40 w-full lg:w-[716px] h-[290px] md:h-[483px]">
+                  <div className="absolute bottom-0 right-0 z-40 w-full md:w-[716px] h-[290px] md:h-[483px]">
                     <div className="relative h-full w-full">
                       <Image
                         src={heroCard.productGroupImage}
